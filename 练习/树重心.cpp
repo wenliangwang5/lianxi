@@ -1,0 +1,51 @@
+#include<bits/stdc++.h>
+#include<iostream>
+#define IOS ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+using namespace std;
+typedef long long ll;
+typedef pair<int,int> PII;
+const int N=100010,M=N*2;
+int e[M],en[M],h[N],idx;
+bool st[N];
+int ans=N;
+int n,m;
+int dfs(int x)
+{
+	int res=0;
+	st[x]=true;
+	int sum=1;
+	for(int i=h[x];i!=-1;i=en[i])
+	{
+		int j=e[i];
+		if(!st[j])
+		{
+			int s=dfs(j);
+			res=max(res,s);
+			sum+=s;
+		}
+		
+	}
+	res=max(res,n-sum);
+	ans=min(ans,res);
+	return sum;
+}
+void add(int a,int b)
+{
+	e[idx]=b,en[idx]=h[a],h[a]=idx++;
+}
+int main()
+{
+	cin>>n;
+	memset(h,-1,sizeof h);
+  for(int i=1;i<n;i++)
+  {
+  	int a,b;
+  	cin>>a>>b;
+  	add(a,b),add(b,a);
+  }
+  dfs(1);
+  cout<<ans<<endl;
+  return 0;
+}
+
+
